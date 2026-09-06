@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum GdvCategory {
+  UNDER_50_CR
+  BETWEEN_50_AND_100_CR
+  BETWEEN_100_AND_250_CR
+  BETWEEN_250_AND_500_CR
+  ABOVE_500_CR
+}
+
+enum ProjectType {
+  HIGH_RISE
+  VILLA
+  COMMERCIAL
+}
+
+model Lead {
+  id            String       @id @default(cuid())
+  name          String       @db.VarChar(120)
+  email         String       @db.VarChar(254)
+  phone         String       @db.VarChar(32)
+  countryCode   String       @db.VarChar(8)
+  nriStatus     Boolean      @default(false)
+  gdvCategory   GdvCategory
+  projectType   ProjectType
+  createdAt     DateTime     @default(now()) @db.Timestamptz(6)
+
+  @@index([email])
+  @@index([nriStatus, gdvCategory])
+  @@index([createdAt])
+}
+
+model Project {
+  id                 String   @id @default(cuid())
+  title              String   @db.VarChar(180)
+  location           String   @db.VarChar(160)
+  priceInCrores      Decimal  @db.Decimal(12, 2)
+  reraNumber         String   @unique @db.VarChar(64)
+  isVastuCompliant   Boolean  @default(false)
+
+  @@index([location])
+  @@index([isVastuCompliant])
+}
