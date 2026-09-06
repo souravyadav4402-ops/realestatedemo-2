@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Portfolio — Meridian Estates</title>
+<meta name="description" content="Currently represented residences across Bel Air, Malibu, Montecito, Beverly Hills and Newport Beach. Filter by area, type, price and bedrooms.">
+<meta name="theme-color" content="#0b0d10">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;450;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
+<script>
+  /* Reveal animations start hidden; gate that on `.js` and drop the class on any
+     script error so a broken build degrades to readable content, never a blank page. */
+  document.documentElement.classList.add('js');
+  addEventListener('error', function (e) {
+    /* only real script errors (ErrorEvent) — a failed image must not strip the class */
+    if (e instanceof ErrorEvent) document.documentElement.classList.remove('js');
+  }, true);
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0d10'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' fill='%23b08d4f' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip-link" href="#results">Skip to results</a>
+
+<header class="header force-solid">
+  <div class="header-inner">
+    <a class="brand" href="index.html" aria-label="Meridian Estates, home">
+      <span class="brand-mark">Meridian</span><span class="brand-sub">Estates</span>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="listings.html" aria-current="page">Portfolio</a>
+      <a href="index.html#sell">Sell</a>
+      <a href="index.html#team">Advisors</a>
+      <a href="index.html#insights">Insights</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <a class="header-tel" href="tel:+13105550100">+1 (310) 555 0100</a>
+      <a class="btn btn-light btn-sm" href="index.html#sell">Request Valuation</a>
+      <button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="mobile-nav">
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-nav" id="mobile-nav">
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="listings.html">Portfolio</a></li>
+    <li><a href="index.html#sell">Sell</a></li>
+    <li><a href="index.html#team">Advisors</a></li>
+    <li><a href="index.html#insights">Insights</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <div class="mobile-nav-foot">
+    <a class="btn btn-brass btn-sm" href="index.html#sell">Request a valuation</a>
+    <a href="tel:+13105550100">+1 (310) 555 0100</a>
+    <a href="mailto:office@meridianestates.com">office@meridianestates.com</a>
+  </div>
+</div>
+
+<main>
+  <!-- ============================================================ PAGE HEAD -->
+  <section class="page-head">
+    <div class="container">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span>/</span><span>Portfolio</span>
+      </nav>
+      <div class="section-head-row" style="margin-bottom:0">
+        <div>
+          <h1>The Portfolio</h1>
+          <p class="lead" style="margin-top:1rem">
+            Everything currently represented, including properties released to
+            the open market this week. Roughly a further thirty residences are
+            held privately — <a href="index.html#contact" style="border-bottom:1px solid var(--brass);color:var(--ink)">ask to see the off-market book</a>.
+          </p>
+        </div>
+        <div style="text-align:right">
+          <p class="eyebrow" style="justify-content:flex-end">Updated</p>
+          <p class="serif-italic" style="font-size:1.35rem">6 September 2026</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ FILTERS -->
+  <div class="filters">
+    <div class="container">
+      <div class="filters-inner">
+        <div class="seg" role="group" aria-label="Sale or lease">
+          <button data-status="" class="is-on">All</button>
+          <button data-status="sale">For sale</button>
+          <button data-status="rent">For lease</button>
+        </div>
+
+        <label class="sr-only" for="f-city">Area</label>
+        <select class="filter-select" id="f-city"><option value="">All areas</option></select>
+
+        <label class="sr-only" for="f-type">Type</label>
+        <select class="filter-select" id="f-type"><option value="">All types</option></select>
+
+        <label class="sr-only" for="f-beds">Bedrooms</label>
+        <select class="filter-select" id="f-beds">
+          <option value="">Any beds</option>
+          <option value="3">3+</option>
+          <option value="4">4+</option>
+          <option value="5">5+</option>
+          <option value="6">6+</option>
+        </select>
+
+        <label class="sr-only" for="f-price">Price</label>
+        <select class="filter-select" id="f-price">
+          <option value="">Any price</option>
+          <option value="0-5000000">Up to $5M</option>
+          <option value="5000000-10000000">$5M – $10M</option>
+          <option value="10000000-20000000">$10M – $20M</option>
+          <option value="20000000-999000000">$20M+</option>
+        </select>
+
+        <button class="pill" id="saved-toggle" aria-pressed="false">
+          <svg viewBox="0 0 24 24"><path d="M12 20s-7-4.6-7-9.6A4.4 4.4 0 0 1 12 7a4.4 4.4 0 0 1 7 3.4c0 5-7 9.6-7 9.6Z" stroke-linejoin="round"/></svg>
+          Saved <span data-fav-count></span>
+        </button>
+
+        <button class="clear-filters" id="clear" hidden>Clear all</button>
+
+        <span class="filters-spacer"></span>
+
+        <span class="result-count"><b id="count">0</b> residences</span>
+
+        <label class="sr-only" for="f-sort">Sort</label>
+        <select class="filter-select" id="f-sort">
+          <option value="featured">Featured first</option>
+          <option value="price-desc">Price, high to low</option>
+          <option value="price-asc">Price, low to high</option>
+          <option value="new">Newest listed</option>
+          <option value="size">Largest</option>
+        </select>
+
+        <div class="view-toggle" role="group" aria-label="View">
+          <button data-view="grid" class="is-on" aria-label="Grid view">
+            <svg viewBox="0 0 24 24"><path d="M3 3h8v8H3zM13 3h8v8h-8zM3 13h8v8H3zM13 13h8v8h-8z"/></svg>
+          </button>
+          <button data-view="list" aria-label="List view">
+            <svg viewBox="0 0 24 24"><path d="M3 5h18M3 12h18M3 19h18" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ RESULTS -->
+  <section class="section-sm">
+    <div class="container">
+      <div id="results" class="grid-view"></div>
+
+      <div class="empty" id="empty">
+        <p class="eyebrow center">Nothing matches</p>
+        <h3>No residences fit that combination.</h3>
+        <p class="lead" style="margin-inline:auto">
+          Widen the search, or tell us precisely what you are looking for — a
+          third of what we place never appears on this page.
+        </p>
+        <div style="margin-top:2rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+          <button class="btn" id="reset-empty">Clear filters</button>
+          <a class="btn btn-ghost" href="index.html#contact">Register a requirement</a>
+        </div>
+      </div>
+
+      <div class="load-more-wrap" id="load-more-wrap" hidden>
+        <button class="btn btn-ghost" id="load-more">Load more residences</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ CTA -->
+  <section class="section dark">
+    <div class="container container-narrow" style="text-align:center">
+      <p class="eyebrow center" data-reveal>The private book</p>
+      <h2 data-reveal style="--d:80ms">Around half of what we sell is never listed here.</h2>
+      <p class="lead" data-reveal style="--d:160ms;margin-inline:auto">
+        Owners of significant property often prefer no signage, no portal, and no
+        neighbours knowing. If you are buying seriously above $5M, ask to be
+        added to the private release list.
+      </p>
+      <div style="margin-top:2.5rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap" data-reveal>
+        <a class="btn btn-brass" href="index.html#contact">Request private access</a>
+        <a class="btn btn-light" href="tel:+13105550100">Call the desk</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:0">
+      <span>© 2026 Meridian Estates. DRE #01984472.</span>
+      <div class="footer-legal">
+        <a href="index.html">Home</a>
+        <a href="index.html#sell">Sell</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+      <div class="footer-badges"><span>Equal Housing Opportunity</span></div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site.js"></script>
+<script>
+/* ---------------------------------------------------------- listings logic */
+document.addEventListener('DOMContentLoaded', () => {
+  const results = document.getElementById('results');
+  const countEl = document.getElementById('count');
+  const emptyEl = document.getElementById('empty');
+  const moreWrap = document.getElementById('load-more-wrap');
+  const clearBtn = document.getElementById('clear');
+  const savedBtn = document.getElementById('saved-toggle');
+  const emptyTitle = emptyEl.querySelector('h3');
+  const emptyBody = emptyEl.querySelector('.lead');
+  const PAGE = 6;
+
+  const els = {
+    city: document.getElementById('f-city'),
+    type: document.getElementById('f-type'),
+    beds: document.getElementById('f-beds'),
+    price: document.getElementById('f-price'),
+    sort: document.getElementById('f-sort'),
+  };
+
+  const state = { status: '', city: '', type: '', beds: '', price: '', sort: 'featured', shown: PAGE, view: 'grid', saved: false };
+
+  /* populate selects from data */
+  [...new Set(PROPERTIES.map((p) => p.city))].sort().forEach((c) =>
+    els.city.insertAdjacentHTML('beforeend', `<option value="${c}">${c}</option>`));
+  [...new Set(PROPERTIES.map((p) => p.type))].sort().forEach((t) =>
+    els.type.insertAdjacentHTML('beforeend', `<option value="${t}">${t}</option>`));
+
+  /* Restore state from the query string, so both the homepage search and any
+     shared/bookmarked filter link land on the same result set. */
+  const qs = new URLSearchParams(location.search);
+  if (qs.get('status')) state.status = qs.get('status');
+  if (qs.get('city')) state.city = qs.get('city');
+  if (qs.get('type')) state.type = qs.get('type');
+  if (qs.get('beds')) state.beds = qs.get('beds');
+  /* `max` comes from the homepage budget picker, `price` from a shared link */
+  if (qs.get('max')) state.price = `0-${qs.get('max')}`;
+  if (qs.get('price')) state.price = qs.get('price');
+  if (qs.get('sort')) state.sort = qs.get('sort');
+  if (qs.get('saved') === '1') state.saved = true;
+
+  els.city.value = state.city;
+  els.type.value = state.type;
+  els.beds.value = state.beds;
+  els.sort.value = state.sort;
+
+  /* The homepage budget picker can produce a band the select has no option for
+     (e.g. 0-15000000). Add it so the control never lies about what's applied. */
+  if (state.price && ![...els.price.options].some((o) => o.value === state.price)) {
+    const [lo, hi] = state.price.split('-').map(Number);
+    const m = (n) => `$${(n / 1000000).toFixed(0)}M`;
+    const label = lo === 0 ? `Up to ${m(hi)}` : `${m(lo)} – ${m(hi)}`;
+    els.price.insertAdjacentHTML('beforeend', `<option value="${state.price}">${label}</option>`);
+  }
+  els.price.value = state.price;
+  document.querySelectorAll('[data-status]').forEach((b) =>
+    b.classList.toggle('is-on', b.dataset.status === state.status));
+
+  /* ---------------------------------------------------- filter + sort */
+  function query() {
+    const favs = getFavs();
+    let out = PROPERTIES.filter((p) => {
+      if (state.saved && !favs.includes(p.id)) return false;
+      if (state.status && p.status !== state.status) return false;
+      if (state.city && p.city !== state.city) return false;
+      if (state.type && p.type !== state.type) return false;
+      if (state.beds && p.beds < +state.beds) return false;
+      if (state.price) {
+        const [lo, hi] = state.price.split('-').map(Number);
+        /* compare leases on an annualised basis so the bands stay meaningful */
+        const v = p.status === 'rent' ? p.price * 12 * 14 : p.price;
+        if (v < lo || v > hi) return false;
+      }
+      return true;
+    });
+
+    const by = {
+      'featured': (a, b) => (b.featured - a.featured) || (b.price - a.price),
+      'price-desc': (a, b) => b.price - a.price,
+      'price-asc': (a, b) => a.price - b.price,
+      'new': (a, b) => new Date(b.listed) - new Date(a.listed),
+      'size': (a, b) => b.sqft - a.sqft,
+    };
+    return out.sort(by[state.sort]);
+  }
+
+  function render() {
+    const all = query();
+    const page = all.slice(0, state.shown);
+
+    results.innerHTML = page.map((p, i) => propertyCard(p, { delay: (i % PAGE) * 70 })).join('');
+    results.className = state.view === 'grid' ? 'grid-view' : 'list-view';
+    countEl.textContent = all.length;
+    emptyEl.classList.toggle('show', all.length === 0);
+    moreWrap.hidden = all.length <= state.shown;
+
+    const dirty = state.status || state.city || state.type || state.beds || state.price || state.saved;
+    clearBtn.hidden = !dirty;
+
+    savedBtn.classList.toggle('is-on', state.saved);
+    savedBtn.setAttribute('aria-pressed', String(state.saved));
+
+    /* an empty shortlist needs different guidance to an over-tight filter */
+    const emptyShortlist = state.saved && getFavs().length === 0;
+    emptyTitle.textContent = emptyShortlist
+      ? 'You have not saved anything yet.'
+      : 'No residences fit that combination.';
+    emptyBody.textContent = emptyShortlist
+      ? 'Tap the heart on any residence to shortlist it. Your selection is kept on this device, so it will still be here when you return.'
+      : 'Widen the search, or tell us precisely what you are looking for — a third of what we place never appears on this page.';
+
+    observeReveals(results);
+    watchImages(results);
+
+    /* keep the URL shareable */
+    const q = new URLSearchParams();
+    ['status', 'city', 'type', 'beds'].forEach((k) => state[k] && q.set(k, state[k]));
+    if (state.price) q.set('price', state.price);
+    if (state.sort !== 'featured') q.set('sort', state.sort);
+    if (state.saved) q.set('saved', '1');
+    history.replaceState(null, '', q.toString() ? `?${q}` : location.pathname);
+  }
+
+  /* ---------------------------------------------------------- events */
+  Object.entries(els).forEach(([key, el]) => {
+    el.addEventListener('change', () => {
+      state[key] = el.value;
+      state.shown = PAGE;
+      render();
+    });
+  });
+
+  document.querySelectorAll('[data-status]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-status]').forEach((b) => b.classList.remove('is-on'));
+      btn.classList.add('is-on');
+      state.status = btn.dataset.status;
+      state.shown = PAGE;
+      render();
+    });
+  });
+
+  document.querySelectorAll('[data-view]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-view]').forEach((b) => b.classList.remove('is-on'));
+      btn.classList.add('is-on');
+      state.view = btn.dataset.view;
+      render();
+    });
+  });
+
+  document.getElementById('load-more').addEventListener('click', () => {
+    state.shown += PAGE;
+    render();
+  });
+
+  savedBtn.addEventListener('click', () => {
+    state.saved = !state.saved;
+    state.shown = PAGE;
+    render();
+  });
+
+  /* un-hearting while viewing the shortlist should drop the card immediately */
+  results.addEventListener('click', (e) => {
+    if (state.saved && e.target.closest('[data-fav]')) setTimeout(render, 0);
+  });
+
+  const clearAll = () => {
+    Object.assign(state, { status: '', city: '', type: '', beds: '', price: '', shown: PAGE, saved: false });
+    Object.values(els).forEach((el) => { if (el.id !== 'f-sort') el.value = ''; });
+    document.querySelectorAll('[data-status]').forEach((b) =>
+      b.classList.toggle('is-on', b.dataset.status === ''));
+    render();
+  };
+  clearBtn.addEventListener('click', clearAll);
+  document.getElementById('reset-empty').addEventListener('click', clearAll);
+
+  render();
+});
+</script>
+</body>
+</html>

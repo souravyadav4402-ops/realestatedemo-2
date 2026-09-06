@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Residence — Meridian Estates</title>
+<meta name="description" content="Full particulars, gallery, floor area, amenities and financing detail for a Meridian Estates residence.">
+<meta name="theme-color" content="#0b0d10">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;450;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
+<script>
+  /* Reveal animations start hidden; gate that on `.js` and drop the class on any
+     script error so a broken build degrades to readable content, never a blank page. */
+  document.documentElement.classList.add('js');
+  addEventListener('error', function (e) {
+    /* only real script errors (ErrorEvent) — a failed image must not strip the class */
+    if (e instanceof ErrorEvent) document.documentElement.classList.remove('js');
+  }, true);
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0d10'/%3E%3Ctext x='16' y='23' font-family='Georgia' font-size='19' fill='%23b08d4f' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip-link" href="#particulars">Skip to particulars</a>
+
+<header class="header force-solid">
+  <div class="header-inner">
+    <a class="brand" href="index.html" aria-label="Meridian Estates, home">
+      <span class="brand-mark">Meridian</span><span class="brand-sub">Estates</span>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="listings.html">Portfolio</a>
+      <a href="index.html#sell">Sell</a>
+      <a href="index.html#team">Advisors</a>
+      <a href="index.html#insights">Insights</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <a class="header-tel" href="tel:+13105550100">+1 (310) 555 0100</a>
+      <a class="btn btn-light btn-sm" href="#book">Book a Viewing</a>
+      <button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="mobile-nav">
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-nav" id="mobile-nav">
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="listings.html">Portfolio</a></li>
+    <li><a href="index.html#sell">Sell</a></li>
+    <li><a href="index.html#team">Advisors</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <div class="mobile-nav-foot">
+    <a class="btn btn-brass btn-sm" href="#book">Book a viewing</a>
+    <a href="tel:+13105550100">+1 (310) 555 0100</a>
+    <a href="mailto:office@meridianestates.com">office@meridianestates.com</a>
+  </div>
+</div>
+
+<main id="prop-root">
+  <!-- populated from the query string -->
+</main>
+
+<!-- lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo gallery">
+  <button class="lb-close" id="lb-close" aria-label="Close gallery">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+  <button class="lb-nav lb-prev" id="lb-prev" aria-label="Previous photo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M15 5l-7 7 7 7"/></svg>
+  </button>
+  <!-- no src until opened: an empty src resolves to the page URL and 404s the image -->
+  <img id="lb-img" alt="">
+  <button class="lb-nav lb-next" id="lb-next" aria-label="Next photo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M9 5l7 7-7 7"/></svg>
+  </button>
+  <p class="lb-count" id="lb-count"></p>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:0">
+      <span>© 2026 Meridian Estates. DRE #01984472.</span>
+      <div class="footer-legal">
+        <a href="listings.html">Portfolio</a>
+        <a href="index.html#sell">Sell</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+      <div class="footer-badges"><span>Equal Housing Opportunity</span></div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site.js"></script>
+<script>
+/* --------------------------------------------------------- property page */
+document.addEventListener('DOMContentLoaded', () => {
+  const slug = new URLSearchParams(location.search).get('id');
+  const p = getProperty(slug) || PROPERTIES[0];
+  const agent = AGENTS[p.agent];
+  const root = document.getElementById('prop-root');
+  const ppsf = Math.round((p.status === 'rent' ? p.price * 12 : p.price) / p.sqft);
+  const dom = daysOnMarket(p.listed);
+
+  document.title = `${p.title}, ${p.city} — Meridian Estates`;
+  document.querySelector('meta[name="description"]').setAttribute('content',
+    `${p.title} — ${p.beds} bedrooms, ${p.sqft.toLocaleString()} sq ft at ${p.address}, ${p.city}. ${p.tagline}`);
+
+  /* structured data for the listing */
+  const ld = document.createElement('script');
+  ld.type = 'application/ld+json';
+  ld.textContent = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'SingleFamilyResidence',
+    name: p.title,
+    description: p.description,
+    numberOfRooms: p.beds,
+    floorSize: { '@type': 'QuantitativeValue', value: p.sqft, unitCode: 'FTK' },
+    address: { '@type': 'PostalAddress', streetAddress: p.address, addressLocality: p.city, addressRegion: 'CA' },
+    offers: { '@type': 'Offer', price: p.price, priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
+  });
+  document.head.appendChild(ld);
+
+  const specRow = (k, v) => `<div class="spec"><span class="k">${k}</span><span class="v">${v}</span></div>`;
+
+  root.innerHTML = `
+  <section class="prop-head">
+    <div class="container">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span>/</span>
+        <a href="listings.html">Portfolio</a><span>/</span>
+        <a href="listings.html?city=${encodeURIComponent(p.city)}">${p.city}</a><span>/</span>
+        <span>${p.id}</span>
+      </nav>
+      <div class="prop-head-row">
+        <div>
+          <div class="card-badges" style="position:static;margin-bottom:1rem">
+            ${p.exclusive ? '<span class="badge badge-brass">Exclusive representation</span>' : ''}
+            ${dom <= 14 ? '<span class="badge badge-new">New to market</span>' : ''}
+            ${p.status === 'rent' ? '<span class="badge badge-ink">For lease</span>' : ''}
+            <span class="badge" style="background:var(--bone)">${p.id}</span>
+          </div>
+          <h1 class="prop-title">${p.title}</h1>
+          <p class="prop-addr">${p.address}, ${p.city} — ${p.region}</p>
+        </div>
+        <div class="prop-price-block">
+          <p class="prop-price">${fmtPrice(p.price, p.status)}</p>
+          <p class="prop-ppsf">$${ppsf.toLocaleString()} per sq ft${p.status === 'rent' ? ' annualised' : ''} · ${dom} days on market</p>
+          <div style="display:flex;gap:.6rem;margin-top:1.1rem;justify-content:flex-end;flex-wrap:wrap">
+            <button class="btn btn-sm ${getFavs().includes(p.id) ? 'btn-brass' : 'btn-ghost'}" data-fav="${p.id}" id="save-btn">
+              ${getFavs().includes(p.id) ? 'Saved' : 'Save residence'}
+            </button>
+            <button class="btn btn-sm btn-ghost" id="share-btn">Share</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container container-wide">
+    <div class="gallery">
+      ${p.images.slice(0, 5).map((src, i) => `
+        <button data-lb="${i}" aria-label="Open photo ${i + 1}">
+          <img src="${src}" alt="${p.title}, photo ${i + 1}" loading="${i < 2 ? 'eager' : 'lazy'}">
+          ${i === 4 || (p.images.length < 5 && i === p.images.length - 1)
+            ? `<span class="gallery-more">
+                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5h18v14H3zM8 12l3 3 5-6"/></svg>
+                 All ${p.images.length} photos
+               </span>` : ''}
+        </button>`).join('')}
+    </div>
+  </div>
+
+  <section class="section" id="particulars">
+    <div class="container">
+      <div class="prop-layout">
+        <!-- ============================ left column -->
+        <div>
+          <div class="spec-grid" data-reveal>
+            ${specRow('Bedrooms', p.beds)}
+            ${specRow('Bathrooms', p.baths)}
+            ${specRow('Interior', p.sqft.toLocaleString())}
+            ${specRow('Lot', p.lot)}
+            ${specRow('Built', p.year)}
+            ${specRow('Parking', p.parking)}
+          </div>
+
+          <div class="prop-block" data-reveal>
+            <h2>The residence</h2>
+            <p class="lead" style="margin-bottom:1.25rem">${p.tagline}</p>
+            <p class="prop-desc">${p.description}</p>
+            <p class="prop-desc">
+              Full particulars including survey, title report, mechanical schedule
+              and a three-year maintenance history are available to qualified
+              parties on request. ${agent.name.split(' ')[0]} can arrange access
+              within twenty-four hours, including outside office hours.
+            </p>
+          </div>
+
+          <div class="prop-block" data-reveal>
+            <h2>Features &amp; amenities</h2>
+            <ul class="amenities">
+              ${p.features.map((f) => `<li>${ICON.check}<span>${f}</span></li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="prop-block" data-reveal>
+            <h2>Financing</h2>
+            <p class="muted" style="margin-bottom:1.5rem;max-width:60ch">
+              Indicative only. Meridian introduces clients to three private banks
+              who lend against California property at institutional rates.
+            </p>
+            <div class="calc">
+              <div class="calc-fields">
+                <div class="field">
+                  <label for="c-price">Purchase price</label>
+                  <input class="input" id="c-price" type="number" value="${p.status === 'rent' ? p.price * 200 : p.price}" step="50000">
+                </div>
+                <div class="field">
+                  <label for="c-term">Term (years)</label>
+                  <select class="select" id="c-term">
+                    <option>15</option><option selected>30</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label for="c-down">Deposit — <span id="down-out">30%</span></label>
+                <input class="range" id="c-down" type="range" min="10" max="70" value="30" step="5">
+              </div>
+              <div class="field">
+                <label for="c-rate">Interest rate — <span id="rate-out">5.85%</span></label>
+                <input class="range" id="c-rate" type="range" min="3" max="9" value="5.85" step="0.05">
+              </div>
+              <div class="calc-out">
+                <div>
+                  <p class="k">Estimated monthly principal &amp; interest</p>
+                  <p class="v" id="c-monthly">—</p>
+                </div>
+                <div style="text-align:right">
+                  <p class="k">Loan amount</p>
+                  <p class="v" id="c-loan" style="font-size:1.5rem">—</p>
+                </div>
+              </div>
+              <div class="calc-split">
+                <span>Property tax est. <b id="c-tax">—</b>/mo</span>
+                ${p.hoa ? `<span>HOA <b>$${p.hoa.toLocaleString()}</b>/mo</span>` : ''}
+                <span>Insurance est. <b id="c-ins">—</b>/mo</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="prop-block" data-reveal>
+            <h2>Location</h2>
+            <div class="map-wrap">
+              <iframe title="Map of ${p.city}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=-118.62%2C33.96%2C-118.28%2C34.14&amp;layer=mapnik"></iframe>
+            </div>
+            <div class="spec-grid spec-grid-4" style="margin-top:1.25rem">
+              ${specRow('Walk score', p.type === 'Apartment' || p.type === 'Townhouse' ? '92' : '48')}
+              ${specRow('School rating', '9/10')}
+              ${specRow('To LAX', '28 min')}
+              ${specRow('Zoning', p.type === 'Ranch' ? 'AG-II' : 'R1')}
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================ right rail -->
+        <aside>
+          <div class="agent-panel" id="book">
+            <div class="agent-panel-head">
+              <img src="${agent.photo}" alt="${agent.name}">
+              <div>
+                <p class="an">${agent.name}</p>
+                <p class="ar">${agent.title}</p>
+              </div>
+            </div>
+            <div class="agent-panel-body">
+              <div class="agent-contact">
+                <a href="tel:${agent.phone.replace(/[^+\d]/g, '')}">${ICON.phone} ${agent.phone}</a>
+                <a href="mailto:${agent.email}">${ICON.mail} ${agent.email}</a>
+              </div>
+
+              <p class="panel-divider">Book a private viewing</p>
+
+              <form class="tour-form" data-demo-form="Requested. ${agent.name.split(' ')[0]} will confirm the appointment by text within the hour.">
+                <div class="tour-slots" id="slots"></div>
+                <div class="field">
+                  <label for="t-name" class="sr-only">Name</label>
+                  <input class="input" id="t-name" name="name" type="text" placeholder="Full name" required>
+                </div>
+                <div class="field">
+                  <label for="t-email" class="sr-only">Email</label>
+                  <input class="input" id="t-email" name="email" type="email" placeholder="Email address" required>
+                </div>
+                <div class="field">
+                  <label for="t-phone" class="sr-only">Phone</label>
+                  <input class="input" id="t-phone" name="phone" type="tel" placeholder="Mobile number">
+                </div>
+                <div class="field">
+                  <label for="t-type" class="sr-only">Viewing type</label>
+                  <select class="select" id="t-type" name="viewing">
+                    <option>In person</option>
+                    <option>Private video walkthrough</option>
+                    <option>Send full particulars first</option>
+                  </select>
+                </div>
+                <button class="btn btn-brass btn-block" type="submit">Request viewing</button>
+                <p class="form-note">No obligation. Proof of funds requested prior to access.</p>
+                <div class="form-status"></div>
+              </form>
+
+              <p class="panel-divider">Or</p>
+              <a class="btn btn-ghost btn-block" href="tel:${agent.phone.replace(/[^+\d]/g, '')}">Call ${agent.name.split(' ')[0]} directly</a>
+            </div>
+          </div>
+
+          <div style="background:var(--bone);padding:1.75rem;margin-top:1.5rem">
+            <p class="eyebrow">Confidence</p>
+            <ul style="display:grid;gap:.85rem;font-size:.94rem;color:var(--graphite)">
+              <li style="display:flex;gap:.7rem">${ICON.check}<span>Vendor-verified particulars and survey on file</span></li>
+              <li style="display:flex;gap:.7rem">${ICON.check}<span>Title reviewed by Meridian counsel pre-listing</span></li>
+              <li style="display:flex;gap:.7rem">${ICON.check}<span>All enquiries handled by a named partner</span></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ similar -->
+  <section class="section tint">
+    <div class="container">
+      <div class="section-head-row">
+        <div>
+          <p class="eyebrow" data-reveal>You may also consider</p>
+          <h2 data-reveal style="--d:80ms">Comparable residences</h2>
+        </div>
+        <a class="link" href="listings.html" data-reveal>
+          Full portfolio
+          <svg class="arw" width="16" height="10" viewBox="0 0 16 10" fill="none"><path d="M0 5h14M10 1l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div class="grid g-3" id="similar"></div>
+    </div>
+  </section>`;
+
+  /* ------------------------------------------------- similar properties */
+  const similar = PROPERTIES
+    .filter((x) => x.id !== p.id && x.status === p.status)
+    .sort((a, b) => Math.abs(a.price - p.price) - Math.abs(b.price - p.price))
+    .slice(0, 3);
+  document.getElementById('similar').innerHTML =
+    similar.map((x, i) => propertyCard(x, { delay: i * 80 })).join('');
+
+  /* --------------------------------------------------------- lightbox */
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lb-img');
+  const lbCount = document.getElementById('lb-count');
+  let li = 0;
+
+  const paint = () => {
+    lbImg.src = p.images[li];
+    lbImg.alt = `${p.title}, photo ${li + 1}`;
+    lbCount.textContent = `${li + 1} / ${p.images.length}`;
+  };
+  const open = (i) => {
+    li = i; paint();
+    lb.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('lb-close').focus();
+  };
+  const close = () => {
+    lb.classList.remove('is-open');
+    document.body.style.overflow = '';
+  };
+  const step = (d) => { li = (li + d + p.images.length) % p.images.length; paint(); };
+
+  document.querySelectorAll('[data-lb]').forEach((b) =>
+    b.addEventListener('click', () => open(+b.dataset.lb)));
+  document.getElementById('lb-close').addEventListener('click', close);
+  document.getElementById('lb-prev').addEventListener('click', () => step(-1));
+  document.getElementById('lb-next').addEventListener('click', () => step(1));
+  lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
+  document.addEventListener('keydown', (e) => {
+    if (!lb.classList.contains('is-open')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') step(-1);
+    if (e.key === 'ArrowRight') step(1);
+  });
+
+  /* ------------------------------------------------ mortgage calculator */
+  const priceEl = document.getElementById('c-price');
+  const downEl = document.getElementById('c-down');
+  const rateEl = document.getElementById('c-rate');
+  const termEl = document.getElementById('c-term');
+  const money = (n) => `$${Math.round(n).toLocaleString('en-US')}`;
+
+  function calc() {
+    const price = +priceEl.value || 0;
+    const downPct = +downEl.value;
+    const rate = +rateEl.value;
+    const years = +termEl.value;
+    const loan = price * (1 - downPct / 100);
+    const r = rate / 100 / 12;
+    const n = years * 12;
+    const monthly = r === 0 ? loan / n : (loan * r) / (1 - Math.pow(1 + r, -n));
+
+    document.getElementById('down-out').textContent = `${downPct}% · ${money(price * downPct / 100)}`;
+    document.getElementById('rate-out').textContent = `${rate.toFixed(2)}%`;
+    document.getElementById('c-monthly').textContent = money(monthly);
+    document.getElementById('c-loan').textContent = money(loan);
+    document.getElementById('c-tax').textContent = money(price * 0.0125 / 12);
+    document.getElementById('c-ins').textContent = money(price * 0.0035 / 12);
+  }
+  [priceEl, downEl, rateEl, termEl].forEach((el) => el.addEventListener('input', calc));
+  calc();
+
+  /* --------------------------------------------------------- tour slots */
+  const days = ['Today', 'Tomorrow', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const times = ['10:00', '13:00', '16:00', '11:00', '14:00', '17:00'];
+  document.getElementById('slots').innerHTML = days.slice(0, 6).map((d, i) =>
+    `<button type="button" class="slot ${i === 0 ? 'is-on' : ''}">${d}<span>${times[i]}</span></button>`).join('');
+  document.getElementById('slots').addEventListener('click', (e) => {
+    const s = e.target.closest('.slot');
+    if (!s) return;
+    document.querySelectorAll('#slots .slot').forEach((x) => x.classList.remove('is-on'));
+    s.classList.add('is-on');
+  });
+
+  /* ------------------------------------------------------ save + share */
+  const saveBtn = document.getElementById('save-btn');
+  saveBtn.addEventListener('click', () => {
+    setTimeout(() => {
+      const on = getFavs().includes(p.id);
+      saveBtn.textContent = on ? 'Saved' : 'Save residence';
+      saveBtn.classList.toggle('btn-brass', on);
+      saveBtn.classList.toggle('btn-ghost', !on);
+    }, 0);
+  });
+
+  document.getElementById('share-btn').addEventListener('click', async () => {
+    const btn = document.getElementById('share-btn');
+    const data = { title: p.title, text: `${p.title} — ${p.city}`, url: location.href };
+    try {
+      if (navigator.share) { await navigator.share(data); return; }
+      await navigator.clipboard.writeText(location.href);
+      btn.textContent = 'Link copied';
+    } catch {
+      btn.textContent = 'Copy failed';
+    }
+    setTimeout(() => (btn.textContent = 'Share'), 2200);
+  });
+
+  /* re-run shared behaviour on the injected markup */
+  observeReveals(root);
+  watchImages(root);
+  initForms();
+});
+</script>
+</body>
+</html>
